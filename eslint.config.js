@@ -32,7 +32,8 @@ export default [
       "import/no-duplicates": "error",
       "import/no-cycle": "error",
 
-      "no-unused-vars": ["error", { varsIgnorePattern: "^[A-Z_]" }],
+      // ES Lint is too 🤬 stupid to even understand about Motion 💫.
+      "no-unused-vars": ["error", { varsIgnorePattern: "^[A-Z_]|^motion$" }],
 
       "perfectionist/sort-imports": "error",
 
