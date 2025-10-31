@@ -1,5 +1,6 @@
 import js from "@eslint/js";
 import importPlugin from "eslint-plugin-import";
+import jsxA11y from "eslint-plugin-jsx-a11y";
 import perfectionist from "eslint-plugin-perfectionist";
 import eslintPluginUseEncapsulation from "eslint-plugin-use-encapsulation";
 import globals from "globals";
@@ -21,6 +22,7 @@ export default [
     },
     plugins: {
       import: importPlugin,
+      "jsx-a11y": jsxA11y,
       perfectionist,
       "use-encapsulation": eslintPluginUseEncapsulation,
     },
@@ -114,6 +116,8 @@ export default [
           allow: ["useMemo"],
         },
       ],
+
+      ...jsxA11y.configs.recommended.rules,
     },
   },
 ];
