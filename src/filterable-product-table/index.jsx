@@ -96,6 +96,23 @@ function ProductRow({ product }) {
  * @param {number} maxPrice
  */
 function ProductTable({ products, filterText, inStockOnly, sortBy, maxPrice }) {
+  const getEmptyMessage = () => {
+    if (!filteredAndSorted.length) return null;
+
+    const conditions = [
+      filterText && `matching "${filterText}"`,
+      inStockOnly && "in stock",
+      maxPrice < MAX_PRODUCT_PRICE && `under $${maxPrice}`,
+    ].filter(Boolean);
+
+    if (!conditions.length) return "No products found";
+    if (conditions.length === 1) return `No products ${conditions[0]}`;
+
+    return `No products ${conditions.slice(0, -1).join(", ")} and ${
+      conditions[conditions.length - 1]
+    }`;
+  };
+
   const filteredAndSorted = products
     .filter((product) => {
       const matchesPrice = parsePrice(product.price) <= maxPrice;
@@ -169,7 +186,7 @@ function ProductTable({ products, filterText, inStockOnly, sortBy, maxPrice }) {
       ) : (
         <div className="text-center py-12 text-gray-500">
           <p className="text-4xl mb-4">🥺</p>
-          <p className="text-lg font-medium">No products found</p>
+          <p className="text-lg font-medium">{getEmptyMessage()}</p>
           <p className="text-sm">Try adjusting your filters</p>
         </div>
       )}
