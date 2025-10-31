@@ -40,6 +40,14 @@ The empty state demonstrates conditional rendering that provides actionable user
 
 To run this project on your machine, first install all the dependencies by running `npm install` in your terminal. Once that finishes, start the development server with `npm run dev`. Open your browser and navigate to [http://localhost:5173](http://localhost:5173) to see the application. The development server supports hot module replacement, which is a fancy way of saying that when you save a file, your changes appear instantly in the browser without losing the application's current state. You can keep your filters active, make a code change, save the file, and watch your change appear without having to re-apply those filters.
 
+## Testing
+
+This project includes basic unit tests using Vitest for core utility functions. Run tests with `npm test` or `npm run test:watch` for watch mode during development.
+
+**What's tested:** Pure functions like `parsePrice` and `generateEmptyProductMessage` demonstrate fundamental testing patterns—clear inputs, predictable outputs, no side effects. These tests cover edge cases like empty filters, single conditions, and multiple combined conditions.
+
+**What's not tested:** Component rendering, user interactions, and the filtering/sorting logic embedded in `ProductTable` are intentionally omitted. Production applications would include comprehensive component tests using React Testing Library and end-to-end tests with tools like Playwright. This focused approach keeps the testing introduction approachable while demonstrating the core pattern: extract pure functions, test them thoroughly.
+
 ## Learning Path
 
 This project follows the "Thinking in React" methodology that React's documentation recommends for building user interfaces. The process starts with a mockup and product data structure—imagine a designer hands you a sketch and a spreadsheet. Your first job is to break that UI into a component hierarchy based on the single responsibility principle. Each component should do one thing well. Once you've identified your components, you build a static version using only props to understand how the pieces fit together. At this stage, nothing is interactive yet—you're just proving that the structure makes sense.
