@@ -136,7 +136,7 @@ function ProductTable({ products, filterText, inStockOnly, sortBy, maxPrice }) {
       ? [
           <ProductCategoryRow
             category={product.category}
-            key={product.category}
+            key={`${product.category}-${index}`}
           />,
           <ProductRow product={product} key={product.name} />,
         ]
