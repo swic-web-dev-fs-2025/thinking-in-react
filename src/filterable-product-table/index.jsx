@@ -1,6 +1,10 @@
-import { maxPrice as maxProductPrice } from "../lib.js";
+import { MAX_PRODUCT_PRICE } from "../constants";
+import { parsePrice } from "../lib";
 import useFilters from "./use-filters";
 
+/**
+ * @param {{name: string, price: string, category: string, stocked: boolean}[]} products
+ */
 export default function FilterableProductTable({ products }) {
   const {
     filterText,
@@ -38,6 +42,9 @@ export default function FilterableProductTable({ products }) {
   );
 }
 
+/**
+ * @param {string} category
+ */
 function ProductCategoryRow({ category }) {
   const categoryEmojis = {
     Fruits: "🍎",
@@ -59,6 +66,9 @@ function ProductCategoryRow({ category }) {
   );
 }
 
+/**
+ * @param {{name: string, price: string, category: string, stocked: boolean}} product
+ */
 function ProductRow({ product }) {
   return (
     <tr className="border-b border-green-100 hover:bg-green-50 transition-colors">
@@ -78,10 +88,17 @@ function ProductRow({ product }) {
   );
 }
 
+/**
+ * @param {{name: string, price: string, category: string, stocked: boolean}[]} products
+ * @param {string} filterText
+ * @param {boolean} inStockOnly
+ * @param {string} sortBy
+ * @param {number} maxPrice
+ */
 function ProductTable({ products, filterText, inStockOnly, sortBy, maxPrice }) {
   const filteredAndSorted = products
     .filter((product) => {
-      const matchesPrice = Number(product.price.replace("$", "")) <= maxPrice;
+      const matchesPrice = parsePrice(product.price) <= maxPrice;
       const matchesSearch = product.name
         .toLowerCase()
         .includes(filterText.toLowerCase());
@@ -99,9 +116,8 @@ function ProductTable({ products, filterText, inStockOnly, sortBy, maxPrice }) {
       if (sortBy === "name") return a.name.localeCompare(b.name);
 
       // Price sorting
-      const priceA = Number(a.price.replace("$", ""));
-      const priceB = Number(b.price.replace("$", ""));
-
+      const priceA = parsePrice(a.price);
+      const priceB = parsePrice(b.price);
       return sortBy === "price-low" ? priceA - priceB : priceB - priceA;
     });
 
@@ -161,6 +177,17 @@ function ProductTable({ products, filterText, inStockOnly, sortBy, maxPrice }) {
   );
 }
 
+/**
+ * @param {string} filterText
+ * @param {boolean} inStockOnly
+ * @param {string} sortBy
+ * @param {number} maxPrice
+ * @param {(text: string) => void} onFilterTextChange
+ * @param {(checked: boolean) => void} onInStockOnlyChange
+ * @param {(sort: string) => void} onSortByChange
+ * @param {(price: number) => void} onMaxPriceChange
+ * @param {() => void} onClearFilters
+ */
 function SearchBar({
   filterText,
   inStockOnly,
@@ -176,12 +203,16 @@ function SearchBar({
     filterText ||
     inStockOnly ||
     sortBy !== "category" ||
-    maxPrice < maxProductPrice;
+    maxPrice < MAX_PRODUCT_PRICE;
 
   return (
     <form className="mb-6 space-y-4">
+      <label htmlFor="search-input" className="sr-only">
+        Search products
+      </label>
       <input
-        type="text"
+        id="search-input"
+        type="search"
         value={filterText}
         placeholder="Search fresh produce..."
         onChange={(e) => {
@@ -192,10 +223,14 @@ function SearchBar({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-green-800 mb-2">
+          <label
+            className="block text-sm font-medium text-green-800 mb-2"
+            htmlFor="sort-by-select"
+          >
             Sort by
           </label>
           <select
+            id="sort-by-select"
             value={sortBy}
             onChange={(e) => {
               onSortByChange(e.target.value);
@@ -210,13 +245,17 @@ function SearchBar({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-green-800 mb-2">
+          <label
+            htmlFor="price-slider"
+            className="block text-sm font-medium text-green-800 mb-2"
+          >
             Max price: ${maxPrice}
           </label>
           <input
+            id="price-slider"
             type="range"
             min="1"
-            max="5"
+            max={MAX_PRODUCT_PRICE}
             value={maxPrice}
             onChange={(e) => onMaxPriceChange(Number(e.target.value))}
             className="w-full h-2 bg-green-200 rounded-lg appearance-none cursor-pointer accent-green-600"
