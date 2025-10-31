@@ -43,6 +43,31 @@ export default function FilterableProductTable({ products }) {
 }
 
 /**
+ * Renders a downward-pointing chevron SVG icon.
+ * Commonly used for dropdown or disclosure indicators.
+ *
+ * It's taken from https://heroicons.com/
+ */
+function ChevronDownIcon({ className }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="currentColor"
+      className={className}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="m19.5 8.25-7.5 7.5-7.5-7.5"
+      />
+    </svg>
+  );
+}
+
+/**
  * @param {string} category
  */
 function ProductCategoryRow({ category }) {
@@ -229,26 +254,21 @@ function SearchBar({
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label
-            className="block text-sm font-medium text-green-800 mb-2"
-            htmlFor="sort-by-select"
-          >
-            Sort by
-          </label>
+        <div className="relative">
           <select
             id="sort-by-select"
             value={sortBy}
             onChange={(e) => {
               onSortByChange(e.target.value);
             }}
-            className="w-full px-4 py-2 border-2 border-green-300 rounded-lg focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-white cursor-pointer"
+            className="w-full pl-4 pr-10 py-2 border-2 border-green-300 rounded-lg focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-white cursor-pointer appearance-none"
           >
             <option value="category">Category</option>
             <option value="name">Name (A-Z)</option>
             <option value="price-low">Price (Low to High)</option>
             <option value="price-high">Price (High to Low)</option>
           </select>
+          <ChevronDownIcon className="absolute right-3 top-1/4  w-5 h-5 text-green-600 pointer-events-none" />
         </div>
 
         <div>
