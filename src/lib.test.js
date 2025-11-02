@@ -10,7 +10,7 @@ describe("parsePrice", () => {
   });
 });
 
-describe("buildEmptyMessage", () => {
+describe("generateEmptyProductMessage", () => {
   const MAX_PRICE = 5;
 
   it("returns generic message when no filters active", () => {
