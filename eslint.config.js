@@ -118,6 +118,14 @@ export default [
       ],
 
       ...jsxA11y.configs.recommended.rules,
+
+      "no-use-before-define": [
+        "error",
+        {
+          functions: false,
+          variables: true,
+        },
+      ],
     },
   },
 ];
